@@ -1,11 +1,18 @@
 ---
-title: "solveigsenf.github.io"
+title: "Solveig Senf"
+image: /Users/bethsenf/Downloads/Senf-26.jpeg
+2toc: false
+about: 
+3  template: jolla
+4  image-shape: round
+  image-width: 17em
+5  links:
+    - text: LinkedIn
+      href: www.linkedin.com/in/solveig-senf-038a25282
+    - text: GitHub
+      href: https://github.com/solveigsenf
+    - text: Email
+      href: senf2@stolaf.edu
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
+Hi! I'm Solveig! I am a current sophomore at St. Olaf College studying Quantitative Economics and Religion with a concentration in Statistics and Data Science. On campus, I stay busy as a member of the Women's Golf Team and as the Student-Alumni Liaison in Student Government Association. 
