@@ -1,0 +1,176 @@
+---
+title: "02 Mini Project"
+format: html
+---
+
+# Data Acquisition
+
+This project was completed with Ela Kanade, and Morgan Ryan. **You can download this qmd file [here](https://github.com/morgan-ryan15/02_Mini_Project/blob/main/mn_colleges.qmd).**
+
+As college students, we were interested in data on colleges and universities in Minnesota and the surrounding states. As the “enrollment cliff” nears, questions regarding higher education are particularly interesting. We were curious about how many schools are in the state, the size of the schools, and any other variables that provide college-level information. We wanted to investigate this college-wide data in hopes of building a better picture of what further education in Minnesota looks like. Additionally, we were curious about how schools in the Minnesota Intercollegiate Athletic Conference (MIAC) may differ from schools that are not in the MIAC.
+
+We used the table scraping approach to get data from the Wikipedia page ["List of Colleges and Universities in Minnesota"](https://en.wikipedia.org/wiki/List_of_colleges_and_universities_in_Minnesota). Additionally, we collected data on MIAC schools using the same approach from the Wikipedia page ["Minnesota Intercollegiate Athletic Conference"](https://en.wikipedia.org/wiki/Minnesota_Intercollegiate_Athletic_Conference).
+
+We cleaned our data and renamed our column names to see the different nuances in this dataset, excluding the defunct institutions, and only focusing on the current, operating colleges in the area. We decided to make a tibble of all schools and a tibble of schools that are not in the MIAC to see if indicators like enrollment or whether the school is public or private differ. This would help us understand how MIAC schools differ from non-MIAC schools.
+
+Using the polite package, we confirmed that we were scraping the data ethically and responsibly and following good web scraping practices. Before we scraped it, we also made sure we were complying with the website's terms of service.
+
+After scraping and tidying our data, we could easily view the geographic location of each college by making a map (after finding the latitude and longitude for each). Additionally, we could visualize our data in numerous ways. For example, we could make a bar chart of average enrollment with bins for each institution type.
+
+Our data acquisition coding is below!
+
+```{r}
+#| include: FALSE
+
+#read in required packages
+library(tidyverse)
+library(stringr)
+library(rvest)
+library(polite)
+library(sf)
+library(maps)
+library(viridis)
+library(leaflet)
+library(htmltools)
+library(janitor)
+```
+
+## MN Colleges/Universities
+
+```{r, echo=FALSE}
+# check that scraping is allowed (Step 0)
+robotstxt::paths_allowed("https://en.wikipedia.org/wiki/List_of_colleges_and_universities_in_Minnesota")
+
+# Step 1: read_html()
+mn_colleges <- read_html("https://en.wikipedia.org/wiki/List_of_colleges_and_universities_in_Minnesota")
+
+# 2: html_nodes()
+tables <- html_nodes(mn_colleges, css = "table") 
+tables  # have to guesstimate which table contains climate info
+
+# 3: html_table()
+html_table(tables, header = TRUE, fill = TRUE)    # find the right table
+
+mn_data1 <- html_table(tables, header = TRUE, fill = TRUE)[[2]]  
+mn_data1
+
+```
+
+```{r}
+#combine steps using bow and scrape
+session <- bow("https://en.wikipedia.org/wiki/List_of_colleges_and_universities_in_Minnesota", force = TRUE) 
+
+result <- scrape(session) |>
+  html_nodes(css = "table") |> 
+  html_table(header = TRUE, fill = TRUE)
+
+mn_data2 <- result[[2]] #scrape the correct table and name it mn_data2
+
+print(mn_data2, n = 10) 
+
+```
+
+```{r}
+#clean the table and name it mn_colleges
+mn_colleges <- mn_data2 |>
+  clean_names() |>
+  rename(
+    locations = location_s,
+    public_private = control_note_1,
+    type = type_note_2,
+    enrollment = enrollment_14_fall_2023,
+    date_founded = founded
+  ) |>
+  mutate(enrollment = parse_number(enrollment))
+
+print(mn_colleges, n = 10) 
+
+```
+
+```{r}
+#filter and clean minnesota college/university data more, select institutions
+mn_institutions <- mn_colleges |>
+  clean_names() |>
+  select(institution) |>
+  mutate(
+    #making st bens and st johns "one college" 
+    institution = str_trim(str_replace(institution, "and Saint John's University", ""))
+  )
+
+mn_list <- as.list(mn_institutions$institution) #convert to a list for the function below
+
+mn_list
+
+```
+
+## MIAC Conference
+
+```{r, echo=FALSE}
+# check that scraping is allowed (Step 0)
+robotstxt::paths_allowed("https://en.wikipedia.org/wiki/Minnesota_Intercollegiate_Athletic_Conference")
+
+# Step 1: read_html()
+miac_colleges <- read_html("https://en.wikipedia.org/wiki/Minnesota_Intercollegiate_Athletic_Conference")
+
+# 2: html_nodes()
+miac_tables <- html_nodes(miac_colleges, css = "table") 
+miac_tables  # have to guesstimate which table contains climate info
+
+# 3: html_table()
+html_table(miac_tables, header = TRUE, fill = TRUE)    # find the right table
+
+miac_data <- html_table(miac_tables, header = TRUE, fill = TRUE)[[2]]  
+
+print(miac_data, n = 10)
+
+```
+
+```{r}
+#bow and scrape data
+session <- bow("https://en.wikipedia.org/wiki/Minnesota_Intercollegiate_Athletic_Conference", force = TRUE)
+
+miac_result <- scrape(session) |>
+  html_nodes(css = "table") |> 
+  html_table(header = TRUE, fill = TRUE)
+
+#begin cleaning miac data
+miac_data1 <- miac_result[[2]] |>
+  clean_names() 
+
+miac_data1 <- miac_data1 |>
+  select(institution) |>
+  mutate(
+    #fixing name consistency
+    institution = str_trim(str_replace(institution, "\\[.*\\]", ""), side = "right"),
+    institution = str_trim(str_replace(institution, "Mary's University", "Mary's University of Minnesota"), side = "right") 
+  )
+
+miac_data1
+
+miac_list <- as.list(miac_data1$institution) #turn miac_data into a list for the function below
+miac_list
+
+```
+
+```{r}
+#creating function to look for MN colleges who aren't in the miac
+not_in_miac <- function(college_list) {
+  not_matched <- vector()
+  for(i in college_list){
+    if(!(i %in% miac_list)) {
+      not_matched <- c(not_matched, i)
+    }
+  }
+  not_matched
+}
+
+test <- as_tibble(not_in_miac(mn_list)) #make a tibble of non_miac schools
+
+
+non_miac_colleges <- test |>
+  left_join(mn_colleges, by = join_by(value == institution)) #left_join to end with a tibble of full college data for only non-miac schools
+
+slice_head(non_miac_colleges, n = 10)
+slice_head(mn_colleges, n = 10)
+
+```

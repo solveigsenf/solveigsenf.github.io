@@ -1,0 +1,303 @@
+---
+title: "R Tip of the Day"
+format: html
+---
+
+**This presentation on the wordcloud, wordcloud2, and emojifont packages can be downloaded [here](https://github.com/solveigsenf/SDS264/blob/main/tip_of_the_day/R_tip_of_the_day_slides.qmd)**
+
+```{r, include = FALSE}
+library(tidyverse)
+library(gapminder)
+library(gganimate)
+library(ggridges)
+```
+
+```{r, include = FALSE}
+library(tidytext)
+library(janeaustenr)
+library(wordcloud)
+library(RColorBrewer)
+
+all_austen <- austen_books() |>
+  group_by(book) |>
+  mutate(
+    linenumber = row_number(),
+    chapter = cumsum(str_detect(text, 
+                                regex("^chapter [\\divxlc]", 
+                                      ignore_case = TRUE)))) |>
+  ungroup()
+
+all_austen
+
+tidy_austen <- all_austen |>
+  unnest_tokens(output = "word", input = text) |>
+  filter(chapter > 0)
+
+emma_words <- tidy_austen |>
+  anti_join(stop_words, by = c("word" = "word")) |>
+  count(book, word, name = "freq") |>
+  filter(book == "Emma") |>
+  slice_max(order_by = freq, n = 200, with_ties = FALSE) |>
+  mutate(freq = as.numeric(freq),
+         freq = freq/10) |>
+  rename("words" = "word") |>
+  select(-book)
+
+par(bg = "white")
+```
+
+## Why Word Clouds?
+
+### Word clouds are useful tools when... 
+
+::: incremental 
+-analyzing text data 
+:::
+
+::: {.fragment .fade-in} 
+-presenting qualitative data 
+:::
+
+::: {.fragment .fade-in} 
+-identifying key terms in texts 
+:::
+
+::: {.fragment .fade-in} 
+-gathering survey/feedback data
+:::
+
+# Wordcloud
+
+## Loading the required packages
+
+``` {.r code-line-numbers="1|2|3"}
+library(wordcloud)
+library(RColorBrewer)
+library(tidytext)
+library(janeaustenr)
+```
+
+## Data wrangling {auto-animate="true"}
+
+``` r
+tidy_austen <- all_austen |>
+  unnest_tokens(output = "word", input = text) |>
+  filter(chapter > 0)
+
+emma_words <- tidy_austen |>
+  anti_join(stop_words, by = c("word" = "word")) |>
+  count(book, word, name = "freq") |>
+  filter(book == "Emma") |>
+  slice_max(order_by = freq, n = 200, with_ties = FALSE) |>
+  mutate(freq = as.numeric(freq),
+         freq = freq/10) |>
+  rename("words" = "word") |>
+  select(-book)
+```
+
+## Data wrangling
+
+``` {.r code-line-numbers="7,12|10-11|13"}
+tidy_austen <- all_austen |>
+  unnest_tokens(output = "word", input = text) |>
+  filter(chapter > 0)
+
+emma_words <- tidy_austen |>
+  anti_join(stop_words, by = c("word" = "word")) |>
+  count(book, word, name = "freq") |>
+  filter(book == "Emma") |>
+  slice_max(order_by = freq, n = 200, with_ties = FALSE) |>
+  mutate(freq = as.numeric(freq),
+         freq = freq/10) |>
+  rename("words" = "word") |>
+  select(-book)
+```
+
+## Making the cloud
+
+``` r
+with(emma_words, wordcloud(words = words, 
+                               freq = freq, 
+                               max.words = 100, 
+                               min.freq = 0.5,
+                               scale = c(3, 1), 
+                               random.order = FALSE
+```
+
+```{r}
+library(wordcloud)
+library(RColorBrewer)
+
+with(emma_words, wordcloud(words = words, 
+                               freq = freq, 
+                               max.words = 100, 
+                               min.freq = 0.5,
+                               scale = c(3, 1), 
+                               random.order = FALSE))
+```
+
+## Adding details
+
+``` {.r code-line-numbers="1|9"}
+par(bg = "black")
+
+with(emma_words, wordcloud(words = words, 
+                               freq = freq, 
+                               max.words = 50, 
+                               min.freq = 0.5,
+                               scale = c(3, 1), 
+                               random.order = FALSE,
+                               colors = brewer.pal(12, "Set2")))
+```
+
+```{r}
+par(bg = "black")
+
+with(emma_words, wordcloud(words = words, 
+                               freq = freq, 
+                               max.words = 50, 
+                               min.freq = 0.5,
+                               scale = c(3, 1), 
+                               random.order = FALSE,
+                               colors = brewer.pal(12, "Set2")))
+```
+
+# Wordcloud2
+
+## Installing Wordcloud2
+
+``` {.r code-line-numbers="1-2|4"}
+require(devtools)
+install_github("lchiffon/wordcloud2")
+
+library(wordcloud2)
+```
+
+## Making the cloud {auto-animate="true"}
+
+``` r
+wordcloud2(data = emma_words,
+           color = "random-dark")
+```
+
+```{r}
+require(devtools)
+install_github("lchiffon/wordcloud2")
+
+library(wordcloud2)
+
+wordcloud2(data = emma_words,
+           color = "random-dark")
+```
+
+## Customization 
+
+``` {.r code-line-numbers="2|4|5"}
+wordcloud2(data = emma_words, 
+           fontFamily = "Futura", 
+           color = "random-dark",
+           backgroundColor = "navy",
+           shape = 'star')
+```
+
+```{r}
+wordcloud2(data = emma_words, 
+           size = 0.5,
+           fontFamily = "Futura", 
+           color = "random-light",
+           backgroundColor = "navyblue",
+           shape = 'star')
+```
+
+## More Customization {auto-animate="true"}
+
+```r
+letterCloud(emma_words, word = "EMMA", size = 0.75)
+```
+
+![](https://github.com/solveigsenf/SDS264/blob/main/Image%203-10-25%20at%2010.22%E2%80%AFAM.jpeg?raw=true){.absolute top="200" left="200" width="700" height="400"}
+
+# But Wait, There's More! 
+
+## Emojifont Package! {auto-animate="true"}
+
+``` {.r code-line-numbers="1|6"} 
+library(emojifont)
+library(palmerpenguins)
+library(ggplot2)
+
+penguins_adelie <- penguins |>
+  filter(species == "Adelie") |>
+  mutate(label = emoji("penguin"),
+         type = sex)
+```
+
+## Emojifont Package!
+
+``` {.r code-line-numbers="3|5"}
+penguins_adelie |>
+ggplot(aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_text(aes(color = type, label = label), family = "EmojiOne", size = 6) +
+  geom_smooth(method = lm, se = FALSE, size = 0.2, color = "black") +
+  scale_color_manual(values = c("female" = "pink", "male" = "blue", "NA" = "black")) +
+  labs(title = "As body mass increases, \nflipper length also increases",
+       subtitle = paste0("For Adelie penguins"),
+       x = "Body Mass",
+       y = "Flipper Length",
+       color = "Sex") +
+  theme_classic() +
+  theme(legend.position = "none")
+```
+
+## Emojifont Package!
+
+```{r}
+library(emojifont)
+library(palmerpenguins)
+library(ggplot2)
+library(tidyverse)
+library(dplyr)
+
+penguins <- penguins
+```
+
+```{r}
+penguins_adelie <- penguins |>
+  filter(species == "Adelie") |>
+  mutate(label = emoji("penguin"),
+         type = sex)
+
+penguins_adelie |>
+ggplot(aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_text(aes(color = type, label = label), family = "EmojiOne", size = 6) +
+  geom_smooth(method = lm, se = FALSE, size = 0.2, color = "black") +
+  scale_color_manual(values = c("female" = "deeppink3", "male" = "deepskyblue4", "NA" = "black")) +
+  labs(title = "As Body Mass Increases, \nFlipper Length Also Increases",
+       subtitle = paste0("For the Adelie Species"),
+       x = "Body Mass",
+       y = "Flipper Length",
+       color = "Sex") +
+  theme_classic() +
+  theme(legend.position = "none")
+```
+
+# Questions? 😃
+
+## Sources
+
+- [Wordcloud2 Issue](https://github.com/Lchiffon/wordcloud2/issues/12)
+- [R Graph Gallery - Colors](https://r-graph-gallery.com/42-colors-names.html)
+- [Glowbl Word Cloud Guide](https://www.glowbl.com/blog/en/all-you-need-to-know-about-word-cloud-a-complete-guide/)
+- [Wordcloud2 LetterCloud Function](https://rdrr.io/github/Lchiffon/wordcloud2/man/letterCloud.html)
+- [Quarto Presentation Example](https://github.com/joeroith/264_spring_2025/blob/main/quarto_presentations/rtd_example.qmd)
+
+
+## Souces (Continued)
+
+- [Using Emoji Fonts in R](https://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/)
+- [Wordcloud2 Introduction](https://cran.r-project.org/web/packages/wordcloud2/vignettes/wordcloud.html)
+- [An Introduction to the Emojifont Package](https://cran.r-project.org/web/packages/emojifont/vignettes/emojifont.html)
+- [R Graph Gallery - Wordcloud](https://r-graph-gallery.com/wordcloud.html)
+
+
+

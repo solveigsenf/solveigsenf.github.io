@@ -1,0 +1,54 @@
+---
+title: "About Me!"
+title-block-banner: true
+---
+
+## On the Hill
+
+On campus, I stay busy as a member of the Women's Golf Team and as the Student-Alumni Liaison in Student Government Association. 
+
+For golf, we compete in the fall and the spring, playing tournaments each weekend during our season. We practice everyday while we are competing and three times a week indoors during the winter. We also lift at 7AM every Tuesday and Thursday. Beyond playing, I stay involved in Ole Athletics as a member of Ole Leadership Academy and the Student Athletics Advisory Board.
+
+In SGA, I am currently serving my second term as the Student-Alumni Liaison. Through my role, I meet regularly with the Alumni and Parent Relations Office, attend weekly Student Senate meetings, serve as the student representative on the Alumni and Family Board, and am a member of the Student Affairs Committee. 
+This year, I have had the privilege to attend alumni events on campus, in Minneapolis, and in Washington DC! If you have any ideas on how to get students and alumni connected, please let me know!
+
+:::{.column-margin}
+```{r}
+#| echo: false
+#| fig-alt: "A woman speaking into a microphone, presenting at a professional event."
+knitr::include_graphics("images/garcia_STO_150th_20250221_073.jpeg")
+```
+::: {.center-text .extra-small-text .dark-gray-text .topbr}
+Taken at the 150th Celebration of St. Olaf College in Minneapolis, Minnesota.  
+:::
+:::
+
+
+Finally, I stay active in the Economics Department by working as a Teaching Assistant. I have been a TA for both Macroeconomic Theory and Microeconomic Theory, and enjoy getting to develop relationships with my professors!
+
+## Off the Hill
+
+Beyond school, my family is my largest priority. I love seeing my parents whenever I can, and I visit my sister, Bergen, in DC as often as possible. Berg and I are the best of pals. As a family, we love to travel together, play pickle ball, hit the golf course, and go on bike rides. Bergen and I have recently discovered running, and we are addicted! Last year, while Berg was still on the Hill, we began every Saturday with a long run. We are currently looking forward to running our first half-marathon together this summer in LA. 
+
+:::{.column-margin}
+```{r}
+#| echo: false
+#| fig-alt: "A family photo taken outside in front of a brick buliding."
+knitr::include_graphics("images/IMG_1590 2.jpeg")
+```
+::: {.center-text .extra-small-text .dark-gray-text .topbr}
+A family photo taken on the day Bergen graduated from St. Olaf last year. My mom, Beth is on the left and my dad, Kent, is next to me on the right. 
+:::
+:::
+
+:::{.column-margin}
+```{r}
+#| echo: false
+#| fig-alt: "A dad and his two daughters standing by a body of water surrounded by a fjord."
+knitr::include_graphics("images/IMG_5955.jpeg")
+```
+::: {.center-text .extra-small-text .dark-gray-text .topbr}
+From our visit to Norway last summer! We couldn't believe the stunning views in Geiranger.
+:::
+:::
+

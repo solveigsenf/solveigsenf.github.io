@@ -2,17 +2,25 @@
 title: "Solveig Senf"
 image: images/Senf-26.jpeg
 toc: false
-about: 
- template: jolla
- image-shape: round
- image-width: 17em
- links:
+about:
+  template: jolla
+  image-shape: round
+  image-width: 15em
+  links:
     - text: LinkedIn
       href: https://www.linkedin.com/in/solveig-senf-038a25282
     - text: GitHub
       href: https://github.com/solveigsenf
     - text: Email
-      href: mailto::senf2@stolaf.edu
+      href: mailto:senf2@stolaf.edu
+
+format:
+  html:
+    page-layout: full
+    sidebar: false
+    toc: false
 ---
 
-Hi! I'm Solveig! I am a current sophomore at St. Olaf College studying Quantitative Economics and Religion with a concentration in Statistics and Data Science. On campus, I stay busy as a member of the Women's Golf Team and as the Student-Alumni Liaison in Student Government Association. 
+## She/Her
+
+**Hi! I'm Solveig! I am a current sophomore at St. Olaf College studying Quantitative Economics and Religion with a concentration in Statistics and Data Science. Welcome to my website!**

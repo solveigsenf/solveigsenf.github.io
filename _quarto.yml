@@ -3,17 +3,23 @@ project:
   output-dir: docs
 
 website:
-  title: "solveigsenf.github.io"
+  title: "Solveig Senf"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - about_me.qmd
+      - href: mini_project_one.qmd
+        text: Mini Project 1
+      - href: mini_project_two.qmd
+        text: Mini Project 2
+      - href: tip_of_the_day.qmd
+        text: R Tip of the Day
 
 format:
   html:
     theme: cosmo
-    css: styles.css
+    mainfont: "Times New Roman"
     toc: true
 
 editor: visual

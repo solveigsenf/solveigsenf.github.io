@@ -1,0 +1,306 @@
+---
+title: "01 Mini Project"
+format: html
+---
+
+# Maps
+
+**You can download this qmd file [here](https://github.com/solveigsenf/SDS264/blob/main/Projects/01_mini_project_maps_files/01_mini_project_maps.qmd).**
+
+This project features three maps (a static and interactive version of the same variable and a single static map of different variable) that display data from the Centers for Disease Control and Prevention (CDC). Data on Covid-19 levels was collected from February 2022 to May 2023 on a county level. This project displays data recorded on May 11, 2023. For the purposes of this state-level project, I will use the average of county-level data for each state to display Covid-19 cases per 100k. Data can be accessed [here](https://data.cdc.gov/Public-Health-Surveillance/United-States-COVID-19-Community-Levels-by-County/3nnm-4jni/about_data).
+
+Additionally, this project contains two maps (a static and interactive version) that display the 2024 Presidential Election results. Election data is from the Federal Election Commission (FEC) and can be found [here](https://www.fec.gov/introduction-campaign-finance/election-results-and-voting-information/).
+
+The code for the maps is below!
+
+## Covid-19 Maps
+
+```{r}
+library(tidyverse)
+library(mdsr)
+library(maps)
+library(viridis)
+library(lubridate)
+library(leaflet)
+library(sf)
+library(RColorBrewer)
+
+#data set from the CDC
+cdc_data <- read.csv("~/Downloads/01_United_States_COVID-19_Community_Levels_by_County_20250216.csv")
+```
+
+```{r, echo=FALSE}
+covid_data <- cdc_data |>
+  filter(date_updated == "2023-05-11", 
+         !(state %in% c("Puerto Rico", "American Samoa", "Commonwealth of the Northern Mariana Islands", "United States Virgin Islands", "Guam")))
+```
+
+```{r}
+states_polygon <- as_tibble(map_data("state")) |>
+  select(region, group, order, lat, long)
+
+states_sf <- read_sf("https://rstudio.github.io/leaflet/json/us-states.geojson") |>
+  select(name, geometry)
+```
+
+```{r, echo=FALSE}
+#convert county-level data to state-level data
+covid_state_level_data <- covid_data |>
+  filter(covid_cases_per_100k != "NA") |>
+  group_by(state) |>
+  summarize(covid_cases_per_100k = mean(covid_cases_per_100k))
+```
+
+```{r, echo=FALSE}
+#format state names in all data sets so they match 
+covid_state_level_data <- covid_state_level_data |>
+  mutate(state = str_to_lower(state),
+         state = str_replace_all(state, " ", ""),
+         state = str_squish(state))
+
+states_sf <- states_sf |>
+  mutate(name = str_to_lower(name),
+         name = str_replace_all(name, " ", ""))
+
+states_polygon <- states_polygon|>
+  mutate(region = str_replace_all(region, " ", ""))
+```
+
+```{r}
+#join covid data with map data
+covid_map <- covid_state_level_data |>
+  right_join(states_polygon, by =c("state" = "region"))
+
+covid_map <- covid_map |>
+  right_join(states_sf, by =c("state" = "name"))
+```
+
+### Static Map #1
+
+```{r}
+covid_map |>
+  ggplot(mapping = aes(x = long, y = lat,
+                       group = group)) +
+  geom_polygon(aes(fill = covid_cases_per_100k), color = "white", linewidth = 0.2) +
+  labs(fill = "Average Covid Cases \nin Per 100k",
+       x = "",
+       y = "") +
+  coord_map() +
+  theme_void() +
+  scale_fill_viridis(option = "mako", direction = -1)
+```
+
+### Interactive Map #1
+
+```{r}
+states <- read_sf("https://rstudio.github.io/leaflet/json/us-states.geojson") 
+class(states)
+
+states <- states |>
+  mutate(name = str_to_lower(name),
+         name = str_replace_all(name, " ", ""))
+```
+
+```{r, echo=FALSE}
+#join covid data with state plotting data
+state_plotting_covid <- covid_state_level_data |>
+  right_join(states, by = c("state" = "name"))
+
+#breaks for interactive map
+state_plotting_covid_sf <- state_plotting_covid |>
+  mutate(covid_intervals = cut(covid_cases_per_100k, n = 8,
+          breaks = c(0, 10, 20, 30, 40, 50, 60, 70, Inf))) |>
+  filter(!(state %in% c("alaska", "hawaii")))
+
+#base map for interactive map
+ggplot(data = state_plotting_covid_sf) + 
+  geom_sf(aes(geometry = geometry, fill = covid_intervals), colour = "white", linetype = 2) + 
+  theme_void() +  
+  scale_fill_brewer(palette = "Blues") 
+```
+
+```{r}
+bins <- c(0, 10, 20, 30, 40, 50, 60, 70, Inf)
+pal <- colorBin("Blues", domain = state_plotting_covid_sf$covid_cases_per_100k, bins = bins)
+
+library(htmltools)
+library(glue)
+
+str(state_plotting_covid_sf$covid_cases_per_100k)
+
+#add labels to the state_plotting_covid_sf
+state_plotting_sf_labels <- state_plotting_covid_sf |>
+  mutate(labels = str_c(state, ": ", format(round(covid_cases_per_100k, 1)), " cases / 100k people"))
+
+labels <- lapply(state_plotting_sf_labels$labels, HTML)
+
+state_plotting_covid_sf <- st_as_sf(state_plotting_covid_sf)
+
+leaflet(state_plotting_covid_sf) |>
+  setView(-100, 42, 3.5) |> #to view the united states
+  addTiles() |>
+  addPolygons(
+    fillColor = ~pal(covid_cases_per_100k),
+    weight = 1,
+    opacity = 2,
+    color = "black",
+    dashArray = "2",
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(
+      weight = 2,
+      color = "#FFFFFF",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) |>
+  addLegend(pal = pal, values = ~covid_cases_per_100k, opacity = 0.7, title = "Cases per 100k",
+    position = "topright")
+```
+
+### Static Map #2
+
+```{r}
+county_map <- map_data("county") |>
+  mutate(subregion = str_to_lower(subregion),
+         subregion = str_replace_all(subregion, " ", ""),
+         subregion = str_squish(subregion)) |>
+  mutate(region = str_to_lower(region),
+         region = str_replace_all(region, " ", ""))
+
+#fixing odd formating for county names in CDC data
+covid_data_clean <- covid_data |>
+  select(county, state, covid.19_community_level, covid_cases_per_100k) |>
+  mutate(state = str_to_lower(state),
+         state = str_replace_all(state, " ", ""),
+         state = str_squish(state)) |>
+  mutate(county = str_to_lower(county),
+         county = str_replace_all(county, " ", ""),
+         county = str_squish(county),
+         county = str_replace_all(county, "county", ""),
+         county = str_replace_all(county, "st.", ""),
+         county = str_replace_all(county, "city", ""),
+         county = str_replace_all(county, "muni", ""),
+         county = str_replace_all(county, "parish", ""))
+
+covid_county_level_data <- covid_data_clean |>
+  right_join(county_map, by =c("county" = "subregion", "state" = "region"))
+
+covid_county_level_data |>
+  ggplot(mapping = aes(x = long, y = lat,
+                       group = group)) +
+  geom_polygon(aes(fill = covid.19_community_level), color = "white", linewidth = 0.05) +
+  labs(fill = "COVID-19 Levels \n Per County",
+       x = "",
+       y = "") +
+  scale_fill_manual(values = c("High" = "darkred", "Medium" = "gold", "Low" = "darkgreen", "NA" = "gray")) +
+  coord_map() +
+  theme_void() 
+```
+
+## Election Maps
+
+### Static Map #3
+
+```{r, echo=FALSE}
+#data from the federal election commission
+election_data <- read.csv("~/Downloads/2024presgeresults.csv")
+
+election_data <- election_data |>
+  select(STATE, ELECTORAL.VOTE..TRUMP..R., ELECTORAL.VOTE..HARRIS..D., HARRIS, TRUMP) |>
+  rename(state = STATE, 
+         Trump = ELECTORAL.VOTE..TRUMP..R., 
+         Harris = ELECTORAL.VOTE..HARRIS..D.,
+         votes_harris = HARRIS,
+         votes_trump = TRUMP) |>
+  pivot_longer(cols = c(Trump, Harris),
+               names_to ="candidate_won",
+               values_to = "electoral_votes") |>
+  filter(electoral_votes != "NA") |> #remove observations that show the loosing candidate in each state
+  slice(-30, -20) #remove rows 30 and 20 which are second observations of maine and nebraska due to the fact that they split electoral votes. the observation recording the winning candidate is kept. 
+
+election_data <- election_data |>
+  mutate(state = str_to_lower(state),
+         state = str_replace_all(state, " ", ""),
+         state = str_squish(state)) |>
+  mutate(votes_harris = str_squish(votes_harris),
+         votes_trump = str_squish(votes_trump))
+```
+
+```{r}
+electoral_map <- election_data |>
+  right_join(states_polygon, by =c("state" = "region"))
+
+electoral_map <- electoral_map |>
+  right_join(states_sf, by =c("state" = "name"))
+```
+
+```{r}
+electoral_map |>
+  ggplot(mapping = aes(x = long, y = lat,
+                       group = group)) +
+  geom_polygon(aes(fill = candidate_won), color = "white", linewidth = 0.2) +
+  labs(fill = "Winning Candidate \n(2024 Presidential Election)",
+       x = "",
+       y = "") +
+  coord_map() +
+  scale_fill_manual(values = c("Harris" = "darkblue", "Trump" = "darkred")) +
+  theme_void()
+```
+
+### Interactive Map #2
+
+```{r, echo=FALSE}
+election_map_sf <- election_data |>
+  right_join(states, by = c("state" = "name"))
+
+ggplot(data = election_map_sf) + 
+  geom_sf(aes(geometry = geometry, fill = candidate_won), colour = "white", linetype = 2) + 
+  scale_fill_manual(values = c("Harris" = "darkblue", "Trump" = "darkred")) +
+  labs(fill = "Winning Candidate") +
+  theme_void() 
+```
+
+```{r}
+pal <- colorFactor(c("darkblue", "darkred"), domain = election_map_sf$candidate_won) #colorFactor used for categorical variables
+
+library(htmltools)
+library(glue)
+
+str(election_map_sf$votes_harris, votes_trump)
+
+#add labels to the election_map_sf data set
+election_map_sf <- election_map_sf |>
+  mutate(labels = str_c(state, ": ", format(votes_harris), " votes Harris", ", ", format(votes_trump), " votes Trump"))
+
+labels <- lapply(election_map_sf$labels, HTML)
+
+election_map_sf <- st_as_sf(election_map_sf)
+
+leaflet(election_map_sf) |>
+  setView(-100, 42, 3.5) |> #to view the united states
+  addTiles() |>
+  addPolygons(
+    fillColor = ~pal(candidate_won),
+    weight = 1,
+    opacity = 2,
+    color = "black",
+    dashArray = "2",
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(
+      weight = 2,
+      color = "#FFFFFF",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) |>
+  addLegend(pal = pal, values = ~candidate_won, opacity = 0.7, title = "Winning Candidate",
+    position = "topright")
+```
