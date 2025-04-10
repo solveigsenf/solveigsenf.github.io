@@ -16,7 +16,7 @@ This year, I have had the privilege to attend alumni events on campus, in Minnea
 ```{r}
 #| echo: false
 #| fig-alt: "A woman speaking into a microphone, presenting at a professional event."
-knitr::include_graphics("images/garcia_STO_150th_20250221_073.jpeg")
+knitr::include_graphics("images/garcia_STO_150th_20250221_073.jpeg") #speaking photo
 ```
 ::: {.center-text .extra-small-text .dark-gray-text .topbr}
 Taken at the 150th Celebration of St. Olaf College in Minneapolis, Minnesota.  
@@ -34,7 +34,7 @@ Beyond school, my family is my largest priority. I love seeing my parents whenev
 ```{r}
 #| echo: false
 #| fig-alt: "A family photo taken outside in front of a brick buliding."
-knitr::include_graphics("images/IMG_1590 2.jpeg")
+knitr::include_graphics("images/IMG_1590 2.jpeg") #St. Olaf photo
 ```
 ::: {.center-text .extra-small-text .dark-gray-text .topbr}
 A family photo taken on the day Bergen graduated from St. Olaf last year. My mom, Beth is on the left and my dad, Kent, is next to me on the right. 
@@ -45,7 +45,7 @@ A family photo taken on the day Bergen graduated from St. Olaf last year. My mom
 ```{r}
 #| echo: false
 #| fig-alt: "A dad and his two daughters standing by a body of water surrounded by a fjord."
-knitr::include_graphics("images/IMG_5955.jpeg")
+knitr::include_graphics("images/IMG_5955.jpeg") #Norway photo
 ```
 ::: {.center-text .extra-small-text .dark-gray-text .topbr}
 From our visit to Norway last summer! We couldn't believe the stunning views in Geiranger.

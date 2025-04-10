@@ -1,18 +1,18 @@
 ---
 title: "Solveig Senf"
-image: images/Senf-26.jpeg
+image: images/Senf-26.jpeg #headshot
 toc: false
 about:
-  template: jolla
+  template: jolla 
   image-shape: round
-  image-width: 15em
+  image-width: 15em #smaller size 
   links:
     - text: LinkedIn
       href: https://www.linkedin.com/in/solveig-senf-038a25282
     - text: GitHub
       href: https://github.com/solveigsenf
     - text: Email
-      href: mailto:senf2@stolaf.edu
+      href: mailto:senf2@stolaf.edu #mailto: links email
 
 format:
   html:

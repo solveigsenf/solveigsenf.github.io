@@ -37,7 +37,7 @@ library(janitor)
 
 ## MN Colleges/Universities
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, include=FALSE}
 # check that scraping is allowed (Step 0)
 robotstxt::paths_allowed("https://en.wikipedia.org/wiki/List_of_colleges_and_universities_in_Minnesota")
 
@@ -87,7 +87,7 @@ print(mn_colleges, n = 10)
 
 ```
 
-```{r}
+```{r, include=FALSE}
 #filter and clean minnesota college/university data more, select institutions
 mn_institutions <- mn_colleges |>
   clean_names() |>
@@ -105,7 +105,7 @@ mn_list
 
 ## MIAC Conference
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, include=FALSE}
 # check that scraping is allowed (Step 0)
 robotstxt::paths_allowed("https://en.wikipedia.org/wiki/Minnesota_Intercollegiate_Athletic_Conference")
 

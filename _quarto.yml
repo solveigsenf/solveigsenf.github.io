@@ -5,7 +5,7 @@ project:
 website:
   title: "Solveig Senf"
   navbar:
-    left:
+    left: #tabs
       - href: index.qmd
         text: Home
       - about_me.qmd
@@ -18,8 +18,8 @@ website:
 
 format:
   html:
-    theme: cosmo
-    mainfont: "Times New Roman"
+    theme: cosmo #nice clean theme
+    mainfont: "Times New Roman" 
     toc: true
 
 editor: visual

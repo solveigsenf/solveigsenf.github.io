@@ -6,6 +6,7 @@ format: html
 **This presentation on the wordcloud, wordcloud2, and emojifont packages can be downloaded [here](https://github.com/solveigsenf/SDS264/blob/main/tip_of_the_day/R_tip_of_the_day_slides.qmd)**
 
 ```{r, include = FALSE}
+#required packages
 library(tidyverse)
 library(gapminder)
 library(gganimate)
@@ -18,6 +19,7 @@ library(janeaustenr)
 library(wordcloud)
 library(RColorBrewer)
 
+#text data
 all_austen <- austen_books() |>
   group_by(book) |>
   mutate(
@@ -33,6 +35,7 @@ tidy_austen <- all_austen |>
   unnest_tokens(output = "word", input = text) |>
   filter(chapter > 0)
 
+#just the words from the book "Emma"
 emma_words <- tidy_austen |>
   anti_join(stop_words, by = c("word" = "word")) |>
   count(book, word, name = "freq") |>
@@ -43,7 +46,7 @@ emma_words <- tidy_austen |>
   rename("words" = "word") |>
   select(-book)
 
-par(bg = "white")
+par(bg = "white") #background to white
 ```
 
 ## Why Word Clouds?
