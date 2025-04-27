@@ -51,21 +51,21 @@ par(bg = "white") #background to white
 
 ## Why Word Clouds?
 
-### Word clouds are useful tools when... 
+### Word clouds are useful tools when...
 
-::: incremental 
--analyzing text data 
+::: incremental
+-analyzing text data
 :::
 
-::: {.fragment .fade-in} 
--presenting qualitative data 
+::: {.fragment .fade-in}
+-presenting qualitative data
 :::
 
-::: {.fragment .fade-in} 
--identifying key terms in texts 
+::: {.fragment .fade-in}
+-identifying key terms in texts
 :::
 
-::: {.fragment .fade-in} 
+::: {.fragment .fade-in}
 -gathering survey/feedback data
 :::
 
@@ -193,7 +193,7 @@ wordcloud2(data = emma_words,
            color = "random-dark")
 ```
 
-## Customization 
+## Customization
 
 ``` {.r code-line-numbers="2|4|5"}
 wordcloud2(data = emma_words, 
@@ -214,17 +214,17 @@ wordcloud2(data = emma_words,
 
 ## More Customization {auto-animate="true"}
 
-```r
+``` r
 letterCloud(emma_words, word = "EMMA", size = 0.75)
 ```
 
 ![](https://github.com/solveigsenf/SDS264/blob/main/Image%203-10-25%20at%2010.22%E2%80%AFAM.jpeg?raw=true){.absolute top="200" left="200" width="700" height="400"}
 
-# But Wait, There's More! 
+# But Wait, There's More!
 
 ## Emojifont Package! {auto-animate="true"}
 
-``` {.r code-line-numbers="1|6"} 
+``` {.r code-line-numbers="1|6"}
 library(emojifont)
 library(palmerpenguins)
 library(ggplot2)
@@ -288,19 +288,15 @@ ggplot(aes(x = body_mass_g, y = flipper_length_mm)) +
 
 ## Sources
 
-- [Wordcloud2 Issue](https://github.com/Lchiffon/wordcloud2/issues/12)
-- [R Graph Gallery - Colors](https://r-graph-gallery.com/42-colors-names.html)
-- [Glowbl Word Cloud Guide](https://www.glowbl.com/blog/en/all-you-need-to-know-about-word-cloud-a-complete-guide/)
-- [Wordcloud2 LetterCloud Function](https://rdrr.io/github/Lchiffon/wordcloud2/man/letterCloud.html)
-- [Quarto Presentation Example](https://github.com/joeroith/264_spring_2025/blob/main/quarto_presentations/rtd_example.qmd)
-
+-   [Wordcloud2 Issue](https://github.com/Lchiffon/wordcloud2/issues/12)
+-   [R Graph Gallery - Colors](https://r-graph-gallery.com/42-colors-names.html)
+-   [Glowbl Word Cloud Guide](https://www.glowbl.com/blog/en/all-you-need-to-know-about-word-cloud-a-complete-guide/)
+-   [Wordcloud2 LetterCloud Function](https://rdrr.io/github/Lchiffon/wordcloud2/man/letterCloud.html)
+-   [Quarto Presentation Example](https://github.com/joeroith/264_spring_2025/blob/main/quarto_presentations/rtd_example.qmd)
 
 ## Souces (Continued)
 
-- [Using Emoji Fonts in R](https://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/)
-- [Wordcloud2 Introduction](https://cran.r-project.org/web/packages/wordcloud2/vignettes/wordcloud.html)
-- [An Introduction to the Emojifont Package](https://cran.r-project.org/web/packages/emojifont/vignettes/emojifont.html)
-- [R Graph Gallery - Wordcloud](https://r-graph-gallery.com/wordcloud.html)
-
-
-
+-   [Using Emoji Fonts in R](https://guangchuangyu.github.io/2015/12/use-emoji-font-in-r/)
+-   [Wordcloud2 Introduction](https://cran.r-project.org/web/packages/wordcloud2/vignettes/wordcloud.html)
+-   [An Introduction to the Emojifont Package](https://cran.r-project.org/web/packages/emojifont/vignettes/emojifont.html)
+-   [R Graph Gallery - Wordcloud](https://r-graph-gallery.com/wordcloud.html)

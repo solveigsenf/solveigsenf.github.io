@@ -13,6 +13,8 @@ website:
         text: Mini Project 1
       - href: mini_project_two.qmd
         text: Mini Project 2
+      - href: mini_project_four.qmd
+        text: Mini Project 4
       - href: tip_of_the_day.qmd
         text: R Tip of the Day
 
