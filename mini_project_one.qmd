@@ -26,7 +26,7 @@ library(sf)
 library(RColorBrewer)
 
 #data set from the CDC
-cdc_data <- read.csv("~/Downloads/01_United_States_COVID-19_Community_Levels_by_County_20250216.csv")
+cdc_data <- read.csv("~/Downloads/CLASSES/SDS264/01_United_States_COVID-19_Community_Levels_by_County_20250216.csv")
 ```
 
 ```{r, echo=FALSE}
@@ -207,7 +207,7 @@ covid_county_level_data |>
 
 ```{r, echo=FALSE}
 #data from the federal election commission
-election_data <- read.csv("~/Downloads/2024presgeresults.csv")
+election_data <- read.csv("~/Downloads/CLASSES/SDS264/2024presgeresults.csv")
 
 election_data <- election_data |>
   select(STATE, ELECTORAL.VOTE..TRUMP..R., ELECTORAL.VOTE..HARRIS..D., HARRIS, TRUMP) |>

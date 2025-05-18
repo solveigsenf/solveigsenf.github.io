@@ -21,6 +21,4 @@ format:
     toc: false
 ---
 
-## She/Her
-
-**Hi! I'm Solveig! I am a current sophomore at St. Olaf College studying Quantitative Economics and Religion with a concentration in Statistics and Data Science. Welcome to my website!**
+**Hi! I'm Solveig! I am a rising junior at St. Olaf College studying Quantitative Economics and Religion with a concentration in Statistics and Data Science. Here you can learn a little bit more about me and explore my work from Data Science 2.**

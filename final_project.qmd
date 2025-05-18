@@ -1,0 +1,6 @@
+---
+title: "Final Project"
+format: html
+---
+
+Check out my final project at this [link](https://senf2.shinyapps.io/shiny/#section-about). It was built to be a tool for high-schoolers looking to go to a Minnesota college or university. It might take a second to load, so don't worry if it doesn't pop up right away.

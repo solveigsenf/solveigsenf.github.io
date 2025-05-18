@@ -1,6 +1,5 @@
 ---
-title: "04 Mini Project"
-author: Solveig Senf
+title: "03 Mini Project"
 format:
   html: default
 editor_options: 
@@ -9,17 +8,17 @@ editor_options:
 
 # Introduction
 
-This project uses data on the beloved 2000s sitcom (and my personal favorite TV show), Gilmore Girls. This data set, found on Kaggle and accessed [here](https://www.kaggle.com/datasets/julqka/gilmore-girls-lines?resource=download), contains the full script from all seven seasons of the show. 
+**You can download this qmd file [here](https://github.com/solveigsenf/SDS264/blob/main/Projects/04_mini_project/04_mini_project.qmd).**
 
-First, I clean the data, making a few different data frames for different text analysis purposes. To do so, I make use of multiple str_ functions: str_to_lower, str_view, str_replace_all, and str_to_title. 
+This project uses data on the beloved 2000s sitcom (and my personal favorite TV show), Gilmore Girls. This data set, found on Kaggle and accessed [here](https://www.kaggle.com/datasets/julqka/gilmore-girls-lines?resource=download), contains the full script from all seven seasons of the show.
 
-Then, I use the bing sentiment application to analyze the positivity of the show as a whole. After removing the character names and stop words, I found the 10 most used positive words and the 10 most used negative words. Interestingly, positive words were used much more frequently than negative words, providing insight into the attitude of the show. 
+First, I clean the data, making a few different data frames for different text analysis purposes. To do so, I make use of multiple str\_ functions: str_to_lower, str_view, str_replace_all, and str_to_title.
 
-Next, I used a similar application, the afinn application,  to analyze the positivity of the five main characters in the show for each season. Generally, Luke tends to be the most negative character, whereas Sookie tends to be one of the most positive characters. From this analysis, we can also see how characters shift in positivity levels from season to season. 
-I also used the data to make a word cloud of the 100 most commonly used words in the show. The word cloud demonstrates the casual language used by the characters and displays some Gilmore Girl classics like “coffee”, “mother”, and “Yale”. 
+Then, I use the bing sentiment application to analyze the positivity of the show as a whole. After removing the character names and stop words, I found the 10 most used positive words and the 10 most used negative words. Interestingly, positive words were used much more frequently than negative words, providing insight into the attitude of the show.
 
-Finally, I wanted to run a text analysis to help further the contentious, and VERY serious, debate on which of Rory’s boyfriends was the best. First, I used the str_count function to count how many times Rory mentioned each of their names, perhaps indicating the length and importance of each relationship. Then, I plotted the mean positivity score (using the afinn application) for each boyfriend, providing evidence for which of them was the best fit. Was Dean the nicest? Did Logan treat Rory right? Was Jess all bad, or did he have a kind side? This plot will help answer some of these persisting questions. 
+Next, I used a similar application, the afinn application, to analyze the positivity of the five main characters in the show for each season. Generally, Luke tends to be the most negative character, whereas Sookie tends to be one of the most positive characters. From this analysis, we can also see how characters shift in positivity levels from season to season. I also used the data to make a word cloud of the 100 most commonly used words in the show. The word cloud demonstrates the casual language used by the characters and displays some Gilmore Girl classics like “coffee”, “mother”, and “Yale”.
 
+Finally, I wanted to run a text analysis to help further the contentious debate on which of Rory’s boyfriends was the best. First, I used the str_count function to count how many times Rory mentioned each of their names, perhaps indicating the length and importance of each relationship. Then, I plotted the mean positivity score (using the afinn application) for each boyfriend, providing evidence for which of them was the best fit. Was Dean the nicest? Did Logan treat Rory right? Was Jess all bad, or did he have a kind side? This plot will help answer some of these persisting questions.
 
 ```{r}
 #| include: FALSE
@@ -51,9 +50,7 @@ gilmore_girls_clean <- gilmore_girls |>
   unnest_tokens(word, line, token = "words") #makes each word its own row
 ```
 
-
-str_view(gilmore_names$character, "^.*/.*$") #ensure the str_replace_all worked, third str_function, second regular expression ("^.*/.*$") (Removed from R chunch to render.)
-
+str_view(gilmore_names$character, "^.*/.*$") #ensure the str_replace_all worked, third str_function, second regular expression ("\^.*/.*\$") (Removed from R chunch to render.)
 
 ```{r}
 gilmore_names <- gilmore_girls_clean |>
@@ -161,7 +158,7 @@ wordcloud2(
 
 ## Boyfriend Mentions
 
-Did Rory have a favorite the whole time? Was she more excited to talk about one boyfriend compared to the others? It looks like Dean and Logan are separating themselves in the competition for best boyfriend! 
+Did Rory have a favorite the whole time? Was she more excited to talk about one boyfriend compared to the others? It looks like Dean and Logan are separating themselves in the competition for best boyfriend!
 
 ```{r}
 gilmore_girls_clean |>
@@ -173,7 +170,7 @@ gilmore_girls_clean |>
 
 ## Positivity of Boyfriends
 
-Rory might have mention one boyfriend more than the others, but what about how *they* treated *her*? Dean and Logan continue to be great contenders for the title of Rory's best boyfriend. Unfortunately, the results of this affin text analysis do not point to a decisive winner. Jess needs some defending, but it looks like the debate will continue. 
+Rory might have mention one boyfriend more than the others, but what about how *they* treated *her*? Dean and Logan continue to be great contenders for the title of Rory's best boyfriend. Unfortunately, the results of this affin text analysis do not point to a decisive winner. Jess needs some defending, but it looks like the debate will continue.
 
 ```{r}
 gilmore_no_stop_names |>
@@ -191,4 +188,3 @@ gilmore_no_stop_names |>
        y = "Positivity Score",
        x = "Character") 
 ```
-

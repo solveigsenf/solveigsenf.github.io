@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Solveig Senf">
 
-<title>04 Mini Project – Solveig Senf</title>
+<title>03 Mini Project – Solveig Senf</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -174,12 +173,16 @@ window.Quarto = {
 <span class="menu-text">Mini Project 2</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./mini_project_four.html" aria-current="page"> 
-<span class="menu-text">Mini Project 4</span></a>
+    <a class="nav-link active" href="./mini_project_three.html" aria-current="page"> 
+<span class="menu-text">Mini Project 3</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./tip_of_the_day.html"> 
 <span class="menu-text">R Tip of the Day</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./final_project.html"> 
+<span class="menu-text">Final Project</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -218,19 +221,13 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">04 Mini Project</h1>
+<h1 class="title">03 Mini Project</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Solveig Senf </p>
-          </div>
-  </div>
     
   
     
@@ -243,11 +240,12 @@ window.Quarto = {
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
+<p><strong>You can download this qmd file <a href="https://github.com/solveigsenf/SDS264/blob/main/Projects/04_mini_project/04_mini_project.qmd">here</a>.</strong></p>
 <p>This project uses data on the beloved 2000s sitcom (and my personal favorite TV show), Gilmore Girls. This data set, found on Kaggle and accessed <a href="https://www.kaggle.com/datasets/julqka/gilmore-girls-lines?resource=download">here</a>, contains the full script from all seven seasons of the show.</p>
 <p>First, I clean the data, making a few different data frames for different text analysis purposes. To do so, I make use of multiple str_ functions: str_to_lower, str_view, str_replace_all, and str_to_title.</p>
 <p>Then, I use the bing sentiment application to analyze the positivity of the show as a whole. After removing the character names and stop words, I found the 10 most used positive words and the 10 most used negative words. Interestingly, positive words were used much more frequently than negative words, providing insight into the attitude of the show.</p>
 <p>Next, I used a similar application, the afinn application, to analyze the positivity of the five main characters in the show for each season. Generally, Luke tends to be the most negative character, whereas Sookie tends to be one of the most positive characters. From this analysis, we can also see how characters shift in positivity levels from season to season. I also used the data to make a word cloud of the 100 most commonly used words in the show. The word cloud demonstrates the casual language used by the characters and displays some Gilmore Girl classics like “coffee”, “mother”, and “Yale”.</p>
-<p>Finally, I wanted to run a text analysis to help further the contentious, and VERY serious, debate on which of Rory’s boyfriends was the best. First, I used the str_count function to count how many times Rory mentioned each of their names, perhaps indicating the length and importance of each relationship. Then, I plotted the mean positivity score (using the afinn application) for each boyfriend, providing evidence for which of them was the best fit. Was Dean the nicest? Did Logan treat Rory right? Was Jess all bad, or did he have a kind side? This plot will help answer some of these persisting questions.</p>
+<p>Finally, I wanted to run a text analysis to help further the contentious debate on which of Rory’s boyfriends was the best. First, I used the str_count function to count how many times Rory mentioned each of their names, perhaps indicating the length and importance of each relationship. Then, I plotted the mean positivity score (using the afinn application) for each boyfriend, providing evidence for which of them was the best fit. Was Dean the nicest? Did Logan treat Rory right? Was Jess all bad, or did he have a kind side? This plot will help answer some of these persisting questions.</p>
 </section>
 <section id="data-cleaning" class="level1">
 <h1>Data Cleaning</h1>
@@ -331,7 +329,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="mini_project_four_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="mini_project_three_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -368,7 +366,7 @@ Joining with `by = join_by(character)`
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="mini_project_four_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="mini_project_three_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -398,8 +396,8 @@ Joining with `by = join_by(character)`
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"random-dark"</span></span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="wordcloud2 html-widget html-fill-item" id="htmlwidget-a181253a483acb30334e" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-a181253a483acb30334e">{"x":{"word":["yeah","hey","gonna","time","uh","fine","nice","talk","people","love","night","call","um","god","huh","day","home","phone","house","talking","told","coffee","coming","mother","bye","wait","life","stop","wow","school","lot","feel","bad","guess","dinner","tonight","stuff","pretty","ah","leave","town","tomorrow","car","remember","walks","eat","party","wanna","door","sit","hear","happy","fun","wrong","food","start","idea","left","morning","supposed","gilmore","head","happened","called","table","sounds","thinking","cool","meet","week","excuse","crazy","business","money","mind","inn","walk","yale","minutes","heard","care","ready","weird","move","perfect","world","miss","hold","hate","late","check","deal","hands","date","read","stay","couple","minute","listen","rory's"],"freq":[4667,3188,2524,2277,2002,1722,1312,1299,1243,1188,1180,1128,1077,1072,992,946,931,875,871,870,834,808,791,787,777,756,750,738,736,723,694,691,689,689,688,687,677,654,640,605,592,589,579,565,565,561,555,554,550,549,547,536,531,522,514,506,496,494,490,486,476,472,469,466,464,462,462,461,454,450,449,444,434,429,426,422,422,421,417,416,415,415,412,411,410,408,403,402,399,398,395,390,387,383,383,382,380,380,379,378],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0.5,"weightFactor":0.0385686736661667,"backgroundColor":"white","gridSize":0,"minRotation":-0.7853981633974483,"maxRotation":0.7853981633974483,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":[]}</script>
+<div class="wordcloud2 html-widget html-fill-item" id="htmlwidget-a481dafd43c8d3bf001a" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-a481dafd43c8d3bf001a">{"x":{"word":["yeah","hey","gonna","time","uh","fine","nice","talk","people","love","night","call","um","god","huh","day","home","phone","house","talking","told","coffee","coming","mother","bye","wait","life","stop","wow","school","lot","feel","bad","guess","dinner","tonight","stuff","pretty","ah","leave","town","tomorrow","car","remember","walks","eat","party","wanna","door","sit","hear","happy","fun","wrong","food","start","idea","left","morning","supposed","gilmore","head","happened","called","table","sounds","thinking","cool","meet","week","excuse","crazy","business","money","mind","inn","walk","yale","minutes","heard","care","ready","weird","move","perfect","world","miss","hold","hate","late","check","deal","hands","date","read","stay","couple","minute","listen","rory's"],"freq":[4667,3188,2524,2277,2002,1722,1312,1299,1243,1188,1180,1128,1077,1072,992,946,931,875,871,870,834,808,791,787,777,756,750,738,736,723,694,691,689,689,688,687,677,654,640,605,592,589,579,565,565,561,555,554,550,549,547,536,531,522,514,506,496,494,490,486,476,472,469,466,464,462,462,461,454,450,449,444,434,429,426,422,422,421,417,416,415,415,412,411,410,408,403,402,399,398,395,390,387,383,383,382,380,380,379,378],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0.5,"weightFactor":0.0385686736661667,"backgroundColor":"white","gridSize":0,"minRotation":-0.7853981633974483,"maxRotation":0.7853981633974483,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -446,7 +444,7 @@ Joining with `by = join_by(character)`
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="mini_project_four_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="mini_project_three_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
